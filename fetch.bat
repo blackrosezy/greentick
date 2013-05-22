@@ -24,16 +24,15 @@ wget --no-check-certificate "%url_firefox%" -O tmp_firefox.exe
 REM 6. Extract latest firefox file to tmp_firefox folder
 7za.exe e tmp_firefox.exe -y -otmp_firefox
 
-REM 6. Get version number from "tmp_firefox/firefox.exe" and append to version.txt
+REM 7. Get version number from "tmp_firefox/firefox.exe" and append to version.txt
 for /f "tokens=3" %%v in ('sigcheck "tmp_firefox/firefox.exe"^|find /i "version"') do set fileVersion=%%v
 echo firefox:%fileVersion% >> version.txt
 
 REM ------------------------------
 REM Oracle Java
 REM ------------------------------
-Get Oracle Java latest version
-
 echo Get Mozilla Firefox latest version
+
 xidel http://java.com/en/download/chrome.jsp?locale=en -e "//a[@class='jvdla0']/@href" > tmp_java_file
 set /p url_java=<tmp_java_file
 wget --no-check-certificate "%url_java%" -O tmp_java.exe
@@ -43,9 +42,8 @@ echo java:%fileVersion% >> version.txt
 REM ------------------------------
 REM Google Chrome
 REM ------------------------------
-Get Google Chrome latest version
-
 echo Get Mozilla Firefox latest version
+
 wget --no-check-certificate https://tools.google.com/service/update2 --post-data "<?xml version='1.0' encoding='UTF-8'?><request protocol='3.0' version='1.3.21.135' shell_version='1.3.21.103' ismachine='1' sessionid='{8989B147-F32D-43EA-BB06-9901D388E712}' installsource='ondemandcheckforupdate' requestid='{4A6167C6-5DDA-435C-B306-D591CA20FB0D}'><os platform='win' version='6.1' sp='' arch='x86'/><app appid='{4DC8B4CA-1BDA-483E-B5FA-D3C12E15B62D}' version='0' nextversion='' ap='-multi-chrome' lang='' brand='GGLS' client=''><updatecheck/><ping active='1'/></app></request>" -O tmp_chrome.xml
 REM tutorial about XMLStarlet http://dynamomd.org/index.php/tutorialA
 xml sel -t -m "//manifest" -v "@version" tmp_chrome.xml > tmp_chrome
@@ -55,9 +53,8 @@ echo chrome:%fileVersion% >> version.txt
 REM ------------------------------
 REM Microsoft Internet Explorer for XP
 REM ------------------------------
-Get Microsoft Internet Explorer for XP latest version
-
 echo Get Mozilla Firefox latest version
+
 xidel http://windows.microsoft.com/en-us/windows/upgrade-your-browser -e "//span[@class='btnBase']/a/@href" > tmp_ie_xp_file
 set /p url_ie_xp=<tmp_ie_xp_file
 wget --no-check-certificate "%url_ie_xp%" -O tmp_ie_xp.exe
