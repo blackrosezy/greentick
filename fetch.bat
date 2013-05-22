@@ -4,6 +4,9 @@ setlocal EnableDelayedExpansion
 rm -rf tmp_*
 rm -rf *.txt
 rm -rf *.xml
+rm -rf *.json
+
+echo {} > version.json
 
 REM ------------------------------
 REM Mozilla Firefox
@@ -26,7 +29,10 @@ REM 6. Extract latest firefox file to tmp_firefox folder
 
 REM 7. Get version number from "tmp_firefox/firefox.exe" and append to version.txt
 for /f "tokens=3" %%v in ('sigcheck "tmp_firefox/firefox.exe"^|find /i "version"') do set fileVersion=%%v
-echo firefox:%fileVersion% >> version.txt
+
+jq ".firefox = \"%fileVersion%\"" version.json > version.json.1
+del version.json
+ren version.json.1 version.json
 
 REM ------------------------------
 REM Oracle Java
@@ -37,7 +43,9 @@ xidel http://java.com/en/download/chrome.jsp?locale=en -e "//a[@class='jvdla0']/
 set /p url_java=<tmp_java_file
 wget --no-check-certificate "%url_java%" -O tmp_java.exe
 for /f "tokens=3" %%v in ('sigcheck "tmp_java.exe"^|find /i "version"') do set fileVersion=%%v
-echo java:%fileVersion% >> version.txt
+jq ".java = \"%fileVersion%\"" version.json > version.json.1
+del version.json
+ren version.json.1 version.json
 
 REM ------------------------------
 REM Google Chrome
@@ -48,7 +56,9 @@ wget --no-check-certificate https://tools.google.com/service/update2 --post-data
 REM tutorial about XMLStarlet http://dynamomd.org/index.php/tutorialA
 xml sel -t -m "//manifest" -v "@version" tmp_chrome.xml > tmp_chrome
 set /p fileVersion=<tmp_chrome
-echo chrome:%fileVersion% >> version.txt
+jq ".chrome = \"%fileVersion%\"" version.json > version.json.1
+del version.json
+ren version.json.1 version.json
 
 REM ------------------------------
 REM Microsoft Internet Explorer for XP
@@ -60,7 +70,9 @@ set /p url_ie_xp=<tmp_ie_xp_file
 wget --no-check-certificate "%url_ie_xp%" -O tmp_ie_xp.exe
 7za.exe e tmp_ie_xp.exe -y -otmp_ie_xp
 for /f "tokens=3" %%v in ('sigcheck "tmp_ie_xp/iexplore.exe"^|find /i "version"') do set fileVersion=%%v
-echo ie_xp:%fileVersion% >> version.txt
+jq ".ie_xp = \"%fileVersion%\"" version.json > version.json.1
+del version.json
+ren version.json.1 version.json
 
 
 REM xidel http://www.microsoft.com/windows/ie/ --user-agent="Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)" -e "(//span[@class='btnBase']/a/@href)[1]" > tmp_ie_vista
