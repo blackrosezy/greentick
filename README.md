@@ -26,4 +26,4 @@ output:
 
 ### License
 
-Hipache Cli is licensed under the MIT license. (http://opensource.org/licenses/MIT)
+Greentick is licensed under the MIT license. (http://opensource.org/licenses/MIT)
