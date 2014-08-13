@@ -22,3 +22,8 @@ output:
   "java": "7.0.670.1"
 }
 ```
+
+
+### License
+
+Hipache Cli is licensed under the MIT license. (http://opensource.org/licenses/MIT)
